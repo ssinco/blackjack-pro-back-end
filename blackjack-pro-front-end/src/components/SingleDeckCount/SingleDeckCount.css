@@ -1,0 +1,20 @@
+.gameContainer * {
+    box-sizing: border-box;
+    border: 1px dotted grey;
+  }
+  
+  .gameBoard{
+    width: 100%;
+    height: 500px;
+    padding: 50px;
+  }
+  
+  .card {
+    width: 200px;
+    height: 300px;
+  }
+  
+  /* .deck {
+  } */
+  
+  
