@@ -44,6 +44,7 @@ router.post('/signin', async (req, res) => {
                 username: user.username,
                 _id: user._id,
             }, process.env.JWT_SECRET);
+            console.log(token);
             res.status(200).json({ token });
         } else {
             res.status(401).json({ error: 'Invalid username or password.' });

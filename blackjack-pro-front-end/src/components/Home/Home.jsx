@@ -24,15 +24,13 @@ Component
 
 
 
-function Home() {
+function Home(props) {
     /*--------------- States/Hooks ---------------*/
-  
-    const [user, setUser] = useState(authService.getUser()); // using the method from authservice
     const [loginForm,setLoginForm] = useState(1)
   
     const handleFormSwap = () => {
         setLoginForm(loginForm*-1)
-        console.log(loginForm)
+        // console.log(loginForm)
     }
     const handleSignout = () => {
       authService.signout();
@@ -41,20 +39,21 @@ function Home() {
     
     // const navigate = useNavigate();
   
-  
+    // console.log(props)
   
     /*--------------- Return ---------------*/
   
     return (
       <>
         <h1>Home Page</h1>
+        {/* <p>{JSON.stringify(props)}</p> */}
         <div>
             {loginForm > 0 ? (
                 <>
-                    <SigninForm setUser={setUser} handleFormSwap={handleFormSwap}/>
+                    <SigninForm setUser={props.setUser} handleFormSwap={handleFormSwap}/>
                 </>
             ):(
-                <SignupForm setUser={setUser} handleFormSwap={handleFormSwap}/>
+                <SignupForm setUser={props.setUser} handleFormSwap={handleFormSwap}/>
             )}
         </div>
       </>

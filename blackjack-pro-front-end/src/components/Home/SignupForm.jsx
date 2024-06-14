@@ -38,6 +38,7 @@ const SignupForm = (props) => {
 
   return (
     <main>
+      {/* <p>signUp comp{JSON.stringify(props)}</p> */}
       <h1>Sign Up</h1>
       <p>{message}</p>
       <form onSubmit={handleSubmit}>

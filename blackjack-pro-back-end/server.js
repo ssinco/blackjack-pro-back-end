@@ -9,10 +9,14 @@ const app = express();
 const mongoose = require('mongoose');
 const path = require('path')
 
+const PORT = process.env.PORT || 3000;
+
+
 /*
 --------------- Controllers --------------- */
 const usersRouter = require('./controllers/users.js')
 
+const gameLogsRouter = require('./controllers/gameLogs.js')
 
 /*
 --------------- DB Setup --------------- */
@@ -34,11 +38,13 @@ app.use(express.json());
 =============== Routes =============== */
 
 app.use('/users',usersRouter)
+app.use('/game',gameLogsRouter)
 
 app.get('/', (req, res) => {
+    console.log('test')
     res.send('this is the homepage from localhost 3000 backend')
   })
 
-app.listen(process.env.PORT || 3000, () => {``
-    console.log('The express app is ready!');
+app.listen(PORT, () => {``
+    console.log(`Server is running on http://localhost:${PORT}`);
   });

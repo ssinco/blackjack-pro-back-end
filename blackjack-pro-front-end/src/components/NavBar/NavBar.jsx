@@ -22,8 +22,8 @@ const NavBar = ({ handleSignout }) => {
             </div>
             <ul>
 
-              <li><Link to='/game/count-single-card'>Single Card Count</Link></li>
-              <li><Link to='/game/count-multi-card'>Multi Card Count</Link></li>
+              <li><Link to="/game/count-single">Single Card</Link></li>
+              <li><Link to="/game/count-snapshot">Snapshot</Link></li>
               <li><Link to='/game/blackjack'>Full Game</Link></li>
               <li><Link to='' onClick={handleSignout}>Sign Out</Link></li>
             </ul>

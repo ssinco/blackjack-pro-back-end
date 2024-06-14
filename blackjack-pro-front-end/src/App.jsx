@@ -10,6 +10,11 @@ import './App.css'
 import Home from './components/Home/Home';
 import NavBar from './components/NavBar/NavBar';
 import Dashboard from './components/Dashboard/Dashboard';
+import GameCountSingle from './components/GameCountSingle/GameCountSingle';
+import GameCountSnapshot from './components/GameCountSnapshot/GameCountSnapshot';
+import GameBlackjack from './components/GameBlackjack/GameBlackjack';
+
+
 
 import * as authService from '../src/services/authService'
 
@@ -54,13 +59,23 @@ function App() {
       <AuthedUserContext.Provider value={user}>
         <NavBar user={user} handleSignout={handleSignout}/>
         <div className="appContainer">
-          {/* <AuthedUserContext.Provider> */}
+          
             <Routes>
-              <Route path="/" element={<Home/>}/>
-              <Route path="/dashboard" element={<Dashboard/>}/>
+              
+              {/* Protected Routes */}
+              <Route path="/" element={<Home setUser={setUser}/>}/>
 
+              { user && (
+                <>
+                <Route path="/dashboard" element={<Dashboard/>}/>
+                <Route path="/game/count-single" element={<GameCountSingle/>}/>
+                <Route path="/game/count-snapshot" element={<GameCountSnapshot/>}/>
+                <Route path="/game/blackjack" element={<GameBlackjack/>}/>
+                </>
+              )}
+              
             </Routes>
-          {/* </AuthedUserContext.Provider> */}
+          
         </div>
       </AuthedUserContext.Provider>
     </>
