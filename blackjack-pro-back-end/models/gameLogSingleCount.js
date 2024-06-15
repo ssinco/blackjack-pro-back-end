@@ -11,21 +11,27 @@ const gameLogSingleCountSchema = new mongoose.Schema({
     },
     actualCount: {
         type: Number,
+        required: true,
     },
     guessLastCardRange: {
         type: String,
+        required: true,
     },
     actualLastCard: {
         type: Object,
+        required: true,
     },
     guessCountCorrect: {
         type: Boolean,
+        required: true,
     },
     guessLastCardCorrect: {
         type: Boolean,
+        required: true,
     },
     duration: {
         type:Number, // Stored in milliseconds
+        required: true,
     },
 
 }, {timestamps: true}

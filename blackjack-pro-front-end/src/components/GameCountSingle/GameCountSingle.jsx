@@ -3,6 +3,7 @@ Imports
 =======================================================*/
 
 import { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import useTimer from '../../hooks/useTimer';
 
 import './GameCountSingle.css'
@@ -16,10 +17,11 @@ import * as gameLogService from '../../services/gameLogService'
 Helper Functions
 =======================================================*/
 
+
 const createDeck = () => {
   // Create an array of suits
-  const suits = ['hearts']
-  // const suits = ['hearts','diamonds','spades','clubs']
+  // const suits = ['hearts'.]
+  const suits = ['hearts','diamonds','spades','clubs']
   // Create an array of card values, 2 to A
   const values = [
     '2', '3', '4', '5', '6', '7', '8', '9', '10',
@@ -48,17 +50,41 @@ const shuffleDeck = (deck) => {
   return deck;
 }
 
+const formatDate = (timestamp) => {
+  const date = new Date(timestamp);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = String(date.getFullYear()).slice(-2);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  // const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${month}/${day}/${year} ${hours}:${minutes}`;
+};
 
+const formatDuration = (milliseconds) => {
+  const minutes = Math.floor(milliseconds / 60000);
+  const seconds = Math.floor((milliseconds % 60000) / 1000);
+  const ms = Math.floor((milliseconds % 1000) / 10);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}:${ms < 10 ? '0' : ''}${ms}`;
+}
 
+const iconWinLoss = (boolean) => {
+  return boolean
+    // if boolean is True
+    ? <img src="/src/assets/icons/checkmark.svg" alt="Checkmark" style={{ width: '20px', height: '20px' }} />
+    // if boolean is False
+    : <img src="/src/assets/icons/crossmark.svg" alt="Cross" style={{ width: '20px', height: '20px' }} />;
+}
 
 /* =======================================================
 Component
 =======================================================*/
 
 
-const GameCountSingle =()=> {
+const GameCountSingle =({gameLogs, setGameLogs})=> {
 
   /*--------------- States/Hooks ---------------*/
+
 
   const [deck, setDeck] = useState(shuffleDeck(createDeck()))
   const [card, setCard] = useState({})
@@ -66,13 +92,16 @@ const GameCountSingle =()=> {
   const [gameLive, setGameLive] = useState(false);
   const { time, startTimer, stopTimer, resetTimer, formatTime } = useTimer(); // Use the custom hook
 
+
   useEffect(() => {
-    if (gameLive && deck.length === 12) {
+    if (gameLive && deck.length === 51) {
       startTimer();
     } else if (deck.length === 0) {
       stopTimer();
     }
   }, [deck]);
+
+  //
 
   const [formData, setFormData] = useState({
     guessCount: 0,
@@ -95,7 +124,7 @@ const GameCountSingle =()=> {
   
   const handleDraw = () => {
       const lowValues = ['2', '3', '4', '5', '6']
-      const highValues = ['10','J', 'Q', 'K', 'A']
+      const highValues = ['10','jack', 'queen', 'king', 'ace']
       if (deck.length > 0) {
         const drawnCard = deck[0]; // Get the first card
         const newDeck = deck.slice(1); // Create a new deck array without the first card
@@ -137,7 +166,8 @@ const GameCountSingle =()=> {
     handleDraw()
     // Create a DB record for the single deck count
     try {
-      await gameLogService.create(updatedFormData);
+      const newLog = await gameLogService.create(updatedFormData);
+      setGameLogs([newLog, ...gameLogs])
       console.log('Game log created successfully');
     } catch (error) {
       console.error('Error creating game log', error);
@@ -161,14 +191,21 @@ const GameCountSingle =()=> {
             <p>Time: {formatTime(time)}</p>
             <p>Count: {count}</p>
           </div>
-          
           <div className="cardPile">
             <div className="card" id="undrawn">              
-              <img src='/src/assets/cards/red_cardback.png' alt='deck-of-cards'/>
+              {deck.length > 0 && <img src='/src/assets/cards/red_cardback.png' alt='deck-of-cards'/>}
+              
             </div>
             <div className="card" id="drawn">
               {card.image && <img src={card.image} alt={`${card.value} of ${card.suit}`} />}
             </div>
+            {/* <div className="deck">
+              <ol>
+              {deck.map((card,index) => (
+                  <li key={index}>{card.value} - {card.suit}</li>
+              ))}
+              </ol>
+            </div> */}
           </div>
           
           {deck.length > 1 && <button onClick={handleDraw}>Draw</button>}
@@ -245,14 +282,25 @@ const GameCountSingle =()=> {
             </> 
           }        
         </div>
-
+        <div className="gameLogContainer">
         
-        <div className="deck">
-          <ol>
-          {deck.map((card,index) => (
-              <li key={index}>{card.value} - {card.suit}</li>
-          ))}
-          </ol>
+        <div className="gameLogTable">
+        <div>Date</div>  
+            <div>Time</div>  
+            <div>Last Card Guess Correct?</div>  
+            <div>Count Correct?</div>  
+            {gameLogs
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((log,index) => (
+                <React.Fragment key={index}>
+                  <div className="grid-item">{formatDate(log.createdAt)}</div>
+                  <div className="grid-item">{formatDuration(log.duration)}</div>
+                  <div className="grid-item">{iconWinLoss(log.guessLastCardCorrect)}</div>
+                  <div className="grid-item">{iconWinLoss(log.guessCountCorrect)}</div>
+                </React.Fragment>
+            ))}       
+          </div>
+      
         </div>
       </div>
     </>
