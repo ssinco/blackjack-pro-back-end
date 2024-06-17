@@ -185,7 +185,7 @@ const GameCountSingle =({gameLogs, setGameLogs})=> {
   return (
     <>
       <div className="gameContainer">
-        <h1>BJ PAGE</h1>
+        <h1>Single Deck Count</h1>
         <div className="gameBoard">
           <div className="gameStats">
             <p>Time: {formatTime(time)}</p>
@@ -283,24 +283,23 @@ const GameCountSingle =({gameLogs, setGameLogs})=> {
           }        
         </div>
         <div className="gameLogContainer">
-        
-        <div className="gameLogTable">
-        <div>Date</div>  
-            <div>Time</div>  
-            <div>Last Card Guess Correct?</div>  
-            <div>Count Correct?</div>  
+
+          <div className="gameLogTable">
+            <div>Date</div>
+            <div>Time</div>
+            <div>Last Card Guess Correct?</div>
+            <div>Count Correct?</div>
             {gameLogs
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-              .map((log,index) => (
+              .map((log, index) => (
                 <React.Fragment key={index}>
                   <div className="grid-item">{formatDate(log.createdAt)}</div>
                   <div className="grid-item">{formatDuration(log.duration)}</div>
                   <div className="grid-item">{iconWinLoss(log.guessLastCardCorrect)}</div>
                   <div className="grid-item">{iconWinLoss(log.guessCountCorrect)}</div>
                 </React.Fragment>
-            ))}       
+              ))}
           </div>
-      
         </div>
       </div>
     </>

@@ -17,12 +17,11 @@ import GameBlackjack from './components/GameBlackjack/GameBlackjack';
 
 
 import * as authService from '../src/services/authService'
+
 import * as gameLogService from '../src/services/gameLogService'
+import * as logSnapshotService from '../src/services/logSnapshotService'
 
 export const AuthedUserContext = createContext(null);
-
-
-
 
 
 /* =======================================================
@@ -40,6 +39,7 @@ function App() {
 
   const [user, setUser] = useState(authService.getUser()); // using the method from authservice
   const [gameLogs, setGameLogs] = useState([])
+  const [logsSnapshot, setLogsSnapshot] = useState([])
 
   const handleSignout = () => {
     authService.signout();
@@ -53,7 +53,7 @@ function App() {
   // const navigate = useNavigate();
 
 
-    // fetching all game logs for this game for the user
+    // fecthing all the game log for Single count
     useEffect(() => {
       const fetchAllLogs = async () => {
       const gameLogData = await gameLogService.index();
@@ -62,6 +62,15 @@ function App() {
       fetchAllLogs();
     }, [user])
   
+
+    // fecthing all the game log for Snapshot
+    useEffect(() => {
+      const fetchAllLogs = async () => {
+      const gameLogData = await logSnapshotService.index();
+        setLogsSnapshot(gameLogData)
+      };
+      fetchAllLogs();
+    }, [user])
 
 
 
@@ -82,7 +91,7 @@ function App() {
                 <>
                 <Route path="/dashboard" element={<Dashboard/>}/>
                 <Route path="/game/count-single" element={<GameCountSingle gameLogs={gameLogs} setGameLogs={setGameLogs}/>}/>
-                <Route path="/game/count-snapshot" element={<GameCountSnapshot/>}/>
+                <Route path="/game/count-snapshot" element={<GameCountSnapshot logsSnapshot={logsSnapshot} setLogsSnapshot={setLogsSnapshot}/>}/>
                 <Route path="/game/blackjack" element={<GameBlackjack/>}/>
                 </>
               )}
