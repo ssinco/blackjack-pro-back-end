@@ -1,0 +1,8 @@
+.gameContainer * {
+    box-sizing: border-box;
+    border: 1px dotted rgba(128, 128, 128, 0.136);
+  }
+  
+.cards {
+  display: flex;
+}

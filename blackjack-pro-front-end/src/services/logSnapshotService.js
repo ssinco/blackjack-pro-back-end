@@ -1,15 +1,10 @@
 const BASE_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 
-/* =======================================================
-Game Single Count
-=======================================================*/
-
-
-// Show all of the single count game logs for the user
+// Show all of the game logs for the user
 const index = async () => {
   try {
-    const res = await fetch(`${BASE_URL}/game/count-single`, {
+    const res = await fetch(`${BASE_URL}/game/count-snapshot`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     return res.json();
@@ -18,11 +13,11 @@ const index = async () => {
   }
 };
 
-// Create a record of a single count game guess
+// Create a record of the game
 const create = async (formData) => {
     try {
     console.log('create function')
-      const res = await fetch(`${BASE_URL}/game/count-single`, {
+      const res = await fetch(`${BASE_URL}/game/count-snapshot`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

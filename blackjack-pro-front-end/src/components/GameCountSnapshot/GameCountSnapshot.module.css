@@ -1,0 +1,55 @@
+.gameContainer * {
+    box-sizing: border-box;
+    border:1px dotted rgba(128, 128, 128, 0.208);
+}
+
+.deckContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+.playersContainer{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.gameStats {
+  display: flex;
+  gap: 1%;
+}
+
+
+.resultsTable {
+    padding: 20px 0 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    p, h4 {
+      margin: 0;
+    }
+  }
+
+  .gameLogTable {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    li {
+      list-style: none;
+    }
+  }
+
+  .playerCards{
+    display:flex;
+    gap: 1%;
+    .card {
+      min-width: 200px;
+      height: 300px;
+      border-radius: 5px;
+    }
+    .card img{
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+    }
+    #undrawn{
+      background-color: rgb(240, 240, 240);
+    }
+  }
