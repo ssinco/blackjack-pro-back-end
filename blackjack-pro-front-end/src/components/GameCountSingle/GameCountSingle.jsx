@@ -35,7 +35,7 @@ const createDeck = () => {
       deck.push({ 
         value, 
         suit, 
-        image: `/src/assets/cards/${value}_${suit}.png`,
+        image: `/assets/cards/${value}_${suit}.png`,
       });
     }
   }
@@ -71,9 +71,9 @@ const formatDuration = (milliseconds) => {
 const iconWinLoss = (boolean) => {
   return boolean
     // if boolean is True
-    ? <img src="/src/assets/icons/checkmark.svg" alt="Checkmark" style={{ width: '20px', height: '20px' }} />
+    ? <img src="/assets/icons/checkmark.svg" alt="Checkmark" style={{ width: '20px', height: '20px' }} />
     // if boolean is False
-    : <img src="/src/assets/icons/crossmark.svg" alt="Cross" style={{ width: '20px', height: '20px' }} />;
+    : <img src="/assets/icons/crossmark.svg" alt="Cross" style={{ width: '20px', height: '20px' }} />;
 }
 
 /* =======================================================
@@ -193,7 +193,7 @@ const GameCountSingle =({gameLogs, setGameLogs})=> {
           </div>
           <div className="cardPile">
             <div className="card" id="undrawn">              
-              {deck.length > 0 && <img src='/src/assets/cards/red_cardback.png' alt='deck-of-cards'/>}
+              {deck.length > 0 && <img src='/assets/cards/red_cardback.png' alt='deck-of-cards'/>}
               
             </div>
             <div className="card" id="drawn">
