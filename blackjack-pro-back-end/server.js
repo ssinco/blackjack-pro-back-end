@@ -32,6 +32,8 @@ app.use(cors());
 app.use(express.json());
 // Insert the express.static for deployment
 
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'blackjack-pro-front-end/public')));
 
 
 /*
