@@ -9,7 +9,7 @@ const app = express();
 const mongoose = require('mongoose');
 const path = require('path')
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 
 /*
@@ -44,7 +44,7 @@ app.use('/game',gameLogsRouter)
 
 app.get('/', (req, res) => {
     console.log('test')
-    res.send('this is the homepage from localhost 3000 backend')
+    res.send('this is the homepage from localhost 3001 backend')
   })
 
 app.listen(PORT, () => {``

@@ -1,0 +1,31 @@
+/src
+  ├── /assets          # Static assets like images, fonts, etc.
+  ├── /components      # Reusable UI components
+  │    ├── /Navbar
+  │    │   ├── Navbar.jsx
+  │    │   └── Navbar.module.css
+  │    ├── /Container
+  │    │   ├── ContainerLayout.jsx
+  │    │   └── ContainerLayout.module.css
+  │    └── /[Other Shared Components]
+  ├── /pages           # Page components (one per route/view)
+  │    ├── Home.jsx
+  │    ├── About.jsx
+  │    ├── Contact.jsx
+  │    ├── [Other Pages]
+  ├── /layouts         # Layout components that wrap around pages
+  │    ├── MainLayout.jsx
+  │    └── AuthLayout.jsx
+  ├── /services        # API calls, authentication services, etc.
+  │    ├── apiService.js
+  │    └── authService.js
+  ├── /hooks           # Custom React hooks
+  │    └── useAuth.js
+  ├── /contexts        # React Contexts for global state management
+  │    └── AuthContext.jsx
+  ├── /utils           # Utility functions
+  │    └── helpers.js
+  ├── App.jsx          # Main App component
+  ├── index.jsx        # Entry point for React
+  ├── index.css        # Global styles
+  └── routes.jsx       # Centralized routing logic (if using React Router)

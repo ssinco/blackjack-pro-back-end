@@ -1,4 +1,42 @@
-App * {
+@tailwind base;
+
+/* Custom styles with @apply */
+
+html,
+body {
+    @apply bg-gray-50;
+    min-height: 100%;
+}
+
+label {
+    @apply mb-2 block text-sm font-semibold text-gray-900;
+}
+
+input {
+    @apply block w-full appearance-none rounded-lg border border-gray-200 bg-white py-[calc(theme(spacing.2)-1px)] px-[calc(theme(spacing.3)-1px)] text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm;
+}
+
+h1 {
+    @apply text-4xl font-bold text-gray-800;
+}
+
+h2 {
+    @apply text-3xl font-semibold text-gray-800;
+}
+
+h3 {
+    @apply text-2xl font-medium text-gray-800;
+}
+
+h4 {
+    @apply text-sm font-medium text-gray-800;
+}
+
+
+@tailwind components;
+@tailwind utilities;
+
+* {
     box-sizing: border-box;
-    border: 1px dotted grey;
+    /* border: 1px dotted grey; */
 }
