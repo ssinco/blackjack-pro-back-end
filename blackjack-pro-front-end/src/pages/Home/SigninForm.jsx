@@ -2,7 +2,10 @@ import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthedUserContext } from '../../App';
 
+import { Button } from '../../components/template/button'
+
 import * as authService from '../../services/authService';
+
 
 const SigninForm = (props) => {
   
@@ -39,10 +42,10 @@ const SigninForm = (props) => {
 
   return (
     <div class="mx-auto flex w-full max-w-2xl flex-col px-4 sm:px-6">
-      <h1 class="text-center text-2xl font-medium tracking-tight text-gray-900">Log In</h1>
+      <h1 class="text-center text-2xl">Log In</h1>
 
 
-      <p class="mt-3 text-center text-lg text-gray-600">Don’t have an account? <a class="text-cyan-600" onClick={props.handleFormSwap}>Sign up</a> for a free trial.</p>
+      <p class="mt-3 text-center text-lg text-gray-600">Don’t have an account? <a onClick={props.handleFormSwap}>Sign up</a> for a free trial.</p>
 
       <div class="-mx-4 mt-10 flex-auto bg-white px-4 py-10 shadow-2xl shadow-gray-900/10 sm:mx-0 sm:flex-none sm:rounded-5xl sm:p-24"> 
         <form autoComplete="off" onSubmit={handleSubmit}>
@@ -70,8 +73,9 @@ const SigninForm = (props) => {
               />
             </div>
             <div>
-              <button className="btn-primary">Log In</button>
-              <p>{message}</p>
+              {/* <button className="btn-primary">Log In</button> */}
+              <Button type="submit" color="green" className='w-full mb-4'>Login</Button>
+              <p className='text-gray-600'>{message}</p>
               {/* <Link to="/">
                 <button>Cancel</button>
               </Link> */}

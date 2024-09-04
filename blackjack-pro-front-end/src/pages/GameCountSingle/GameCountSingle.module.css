@@ -1,13 +1,12 @@
 .gameContainer {
   box-sizing: border-box;
-  border-bottom: 0.5px solid grey;
   padding: 30px 0 30px 0;
 }
 
 
 .gameBoard {
   gap: 30px;
-  @apply flex flex-col justify-evenly w-full items-center max-w-sm sm:mx-auto min-w-[320px];
+  @apply flex flex-col justify-evenly min-w-full items-center sm:mx-auto;
 }
 
 .gameStats {
@@ -23,23 +22,14 @@
   align-items: center;
 
   .card {
-    width: 200px;
-    height: 300px;
-    max-width: 200px;
-    max-height: 300px;
-    min-width: 200px; /* Ensures the card doesn't shrink below this width */
-    min-height: 300px; /* Ensures the card doesn't shrink below this height */
+    @apply w-[150px] h-[225px] /* Default size for smaller screens */;
+    @apply sm:w-[200px] sm:h-[300px]; /* Larger size constraints for screens > 640px */;
+
     border-radius: 5px;
     overflow: hidden;
     display: flex; /* Flexbox for aligning image inside */
     justify-content: center; /* Centering image horizontally */
     align-items: center; /* Centering image vertically */
-  }
-
-  .card img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
   }
 
   #undrawn {
@@ -52,16 +42,12 @@
 }
 
 .formContainer form {
-  /* padding: 20px 0 20px 0; */
-  /* display: grid;
-    grid-template-columns: 1fr 1fr; */
+
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* @apply md:max-w-[600px] md:mx-auto; */
 
   @apply w-full flex flex-col;
-  /* sm:max-w-[600px] sm:mx-auto; */
   display: flex;
   gap: 10px;
 }
@@ -69,11 +55,9 @@
 .resultsTable {
   display: flex;
   width: 100%;
-  /* flex-grow: 1; */
   gap: 5%; 
   
 }
-
 
 .resultsHeader {
   border-bottom: 0.5px solid grey;
@@ -132,7 +116,7 @@
 }
 
 .submitButton.enabled {
-  @apply bg-cyan-500 text-white hover:bg-cyan-600;
+  @apply bg-green-600 text-white hover:bg-green-700;
 }
 
 
@@ -147,7 +131,7 @@
     w-full 
     items-center 
     max-w-sm 
-    sm:mx-auto 
+    mx-auto
     min-w-[320px]
     relative 
     h-full 

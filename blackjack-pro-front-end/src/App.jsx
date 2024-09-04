@@ -9,6 +9,7 @@ import './App.css'
 
 import Home from './pages/Home/Home';
 import NavBar from './components/custom/NavBar/NavBar';
+import Footer from './components/custom/Footer/Footer';
 import Dashboard from './pages/Dashboard/Dashboard';
 import GameCountSingle from './pages/GameCountSingle/GameCountSingle';
 // import GameCountSnapshot from './components/GameCountSnapshot/GameCountSnapshot';
@@ -60,21 +61,25 @@ function App() {
 
     // fecthing all the game log for Single count
     useEffect(() => {
-      const fetchAllLogs = async () => {
-      const gameLogData = await gameLogService.index();
-          setGameLogs(gameLogData)
-      };
-      fetchAllLogs();
+      if (user) {
+        const fetchAllLogs = async () => {
+        const gameLogData = await gameLogService.index();
+            setGameLogs(gameLogData)
+        };
+        fetchAllLogs();
+      }
     }, [user])
   
 
     // fecthing all the game log for Snapshot
     useEffect(() => {
-      const fetchAllLogs = async () => {
-      const gameLogData = await logSnapshotService.index();
-        setLogsSnapshot(gameLogData)
-      };
-      fetchAllLogs();
+      if (user) {
+        const fetchAllLogs = async () => {
+        const gameLogData = await logSnapshotService.index();
+          setLogsSnapshot(gameLogData)
+        };
+        fetchAllLogs();
+      }
     }, [user])
 
 
@@ -85,24 +90,23 @@ function App() {
     <>
         <AuthedUserContext.Provider value={user}>
           <NavBar handleSignout={handleSignout}/>
-          <div className="appContainer">
+          
             
-              <Routes>
-                
-                {/* Protected Routes */}
-                <Route path="/" element={<Home setUser={setUser}/>}/>
+          <Routes>
+            
+            {/* Protected Routes */}
+            <Route path="/" element={<Home setUser={setUser}/>}/>
 
-                { user && (
-                  <>
-                  <Route path="/dashboard" element={<Dashboard/>}/>
-                  <Route path="/game/count-single" element={<GameCountSingle gameLogs={gameLogs} setGameLogs={setGameLogs}/>}/>
-                  {/* <Route path="/game/count-snapshot" element={<GameCountSnapshot logsSnapshot={logsSnapshot} setLogsSnapshot={setLogsSnapshot}/>}/> */}
-                  </>
-                )}
-                
-              </Routes>
+            { user && (
+              <>
+              <Route path="/dashboard" element={<Dashboard  gameLogs={gameLogs} />}/>
+              <Route path="/game/count-single" element={<GameCountSingle gameLogs={gameLogs} setGameLogs={setGameLogs}/>}/>
+              {/* <Route path="/game/count-snapshot" element={<GameCountSnapshot logsSnapshot={logsSnapshot} setLogsSnapshot={setLogsSnapshot}/>}/> */}
+              </>
+            )}
             
-          </div>
+          </Routes>
+          <Footer handleSignout={handleSignout}/>
         </AuthedUserContext.Provider>
     </>
   )

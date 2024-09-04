@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthedUserContext } from '../../App';
 
+import { Button } from '../../components/template/button'
+
 import * as authService from '../../services/authService';
 
 const SignupForm = (props) => {
@@ -42,8 +44,8 @@ const SignupForm = (props) => {
 
   return (
     <div class ="mx-auto flex w-full max-w-2xl flex-col px-4 sm:px-6">
-      <h1 class="text-center text-2xl font-medium tracking-tight text-gray-900">Sign Up</h1>
-      <p class="mt-3 text-center text-lg text-gray-600">Have an account? <a class="text-cyan-600" onClick={props.handleFormSwap}>Sign in</a> to your account.</p>
+      <h1 class="text-center text-2xl">Sign Up</h1>
+      <p class="mt-3 text-center text-lg text-gray-600">Have an account? <a onClick={props.handleFormSwap}>Sign in</a> to your account.</p>
       <div class="-mx-4 mt-10 flex-auto bg-white px-4 py-10 shadow-2xl shadow-gray-900/10 sm:mx-0 sm:flex-none sm:rounded-5xl sm:p-24">
         {/* <p>signUp comp{JSON.stringify(props)}</p> */}
         <form onSubmit={handleSubmit}>
@@ -78,7 +80,8 @@ const SignupForm = (props) => {
             />
           </div>
           <div>
-            <button class = "btn-primary" disabled={isFormInvalid()}>Sign Up</button>
+            {/* <button class = "btn-primary" disabled={isFormInvalid()}>Sign Up</button> */}
+            <Button type="submit" color="green" className='w-full' disabled={isFormInvalid()}>Signup</Button>
             <p>{message}</p>
             {/* <Link to="/">
               <button onClick={props.handleFormSwap}>Back to Login</button>

@@ -1,14 +1,11 @@
 
-.navContainer{
+/* .navContainer{
     border-bottom: 1px solid rgba(128, 128, 128, 0.415);
     align-items: center;
     justify-content: center;
     display: flex;
-}
-nav {
-    border-bottom: 0.5px solid grey;
-    @apply m-5 sm:m-0;
-}
+    
+} */
 
 nav ul {
     display: flex;
