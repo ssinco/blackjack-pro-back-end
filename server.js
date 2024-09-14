@@ -30,12 +30,26 @@ mongoose.connection.on('connected', () => {
 --------------- Middleware --------------- */
 const isProduction = process.env.NODE_ENV === 'production';
 
+// List of allowed origins
+const allowedOrigins = [
+  'http://localhost:5173', // Development frontend URL
+  'https://your-production-frontend-url.com' // Production frontend URL
+];
+
 const corsOptions = {
-  origin: isProduction ? 'https://your-production-frontend-url.com' : 'http://localhost:5173',
-  credentials: true,               // Allow credentials (cookies, authorization headers, etc.)
+  origin: function (origin, callback) {
+    // Check if the request origin is in the allowed origins list
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 
 app.use(cors(corsOptions));
+
 
 app.use(express.json());
 // Insert the express.static for deployment
