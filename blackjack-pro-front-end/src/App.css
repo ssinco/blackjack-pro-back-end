@@ -1,9 +1,0 @@
-.appContainer * {
-  /* box-sizing: border-box; */
-  border: 1px dotted rgb(255, 0, 0);
-}
-/* 
-.appContainer {
-  @apply 
-    min-h-screen bg-gradient-to-b from-green-500 to-green-900;
-} */
