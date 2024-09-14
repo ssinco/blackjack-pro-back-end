@@ -28,9 +28,10 @@ mongoose.connection.on('connected', () => {
 
 /*
 --------------- Middleware --------------- */
+const isProduction = process.env.NODE_ENV === 'production';
 
 const corsOptions = {
-  origin: 'http://localhost:5173', // Specify your frontend URL
+  origin: isProduction ? 'https://your-production-frontend-url.com' : 'http://localhost:5173',
   credentials: true,               // Allow credentials (cookies, authorization headers, etc.)
 };
 
