@@ -52,6 +52,6 @@ app.get('/', (req, res) => {
     res.send('this is the homepage from localhost 3001 backend')
   })
 
-app.listen(PORT, () => {``
+app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
