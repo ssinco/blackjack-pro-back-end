@@ -28,7 +28,14 @@ mongoose.connection.on('connected', () => {
 
 /*
 --------------- Middleware --------------- */
-app.use(cors());
+
+const corsOptions = {
+  origin: 'http://localhost:5173', // Specify your frontend URL
+  credentials: true,               // Allow credentials (cookies, authorization headers, etc.)
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 // Insert the express.static for deployment
 
