@@ -17,17 +17,26 @@ router.get('/signin', (req,res)=>{
 router.post('/signup', async (req, res) => {
     try {
         // Check if the username is already taken
-        const userInDatabase = await User.findOne({ username: req.body.username });
-        if (userInDatabase) {
-            return res.json({ error: 'Username already taken.' });
+        // const userInDatabase = await User.findOne({ username: req.body.username });
+        // if (userInDatabase) {
+        //     return res.json({ error: 'Username already taken.' });
+        // }
+
+        // Check for unique email
+        const userByEmail = await User.findOne({ email: req.body.email });
+        if (userByEmail) {
+            return res.status(400).json({ error: 'Email already taken.' });
         }
+
         // Create a new user with hashed password
         const user = await User.create({
-            username: req.body.username,
+            // username: req.body.username,
+            email:req.body.email,
             hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH)
         })
         const token = jwt.sign({
-            username: user.username,
+            // username: user.username,
+            email: user.email,
             _id: user._id,
         }, process.env.JWT_SECRET);
         res.status(201).json({ user, token });
@@ -38,16 +47,18 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.body.username });
+        // const user = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({ email: req.body.email });
         if (user && bcrypt.compareSync(req.body.password, user.hashedPassword)) {
             const token = jwt.sign({
-                username: user.username,
+                // username: user.username,
+                email:user.email,
                 _id: user._id,
             }, process.env.JWT_SECRET);
             console.log(token);
             res.status(200).json({ token });
         } else {
-            res.status(401).json({ error: 'Invalid username or password.' });
+            res.status(401).json({ error: 'Invalid email or password.' });
         }
     } catch (error) {
         res.status(400).json({ error: error.message });
