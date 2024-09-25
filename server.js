@@ -8,14 +8,17 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const path = require('path')
+const passport = require('passport');
 
 const PORT = process.env.PORT || 3001;
+
+// Load Passport config
+require('./config/passport');
 
 
 /*
 --------------- Controllers --------------- */
 const usersRouter = require('./controllers/users.js')
-
 const gameLogsRouter = require('./controllers/gameLogs.js')
 
 /*
@@ -54,6 +57,10 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 // Insert the express.static for deployment
+
+// Initialize Passport (for Google OAuth)
+app.use(passport.initialize());
+
 
 
 /*

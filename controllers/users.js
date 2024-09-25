@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const passport = require('passport');
 
 
 const SALT_LENGTH = 12;
@@ -21,17 +22,17 @@ router.get('/signin', (req,res)=>{
 
 router.post('/signup', async (req, res) => {
     try {
-        // Check if the username is already taken
-        // const userInDatabase = await User.findOne({ username: req.body.username });
-        // if (userInDatabase) {
-        //     return res.json({ error: 'Username already taken.' });
-        // }
-
         // Check for unique email
         const userByEmail = await User.findOne({ email: req.body.email });
         if (userByEmail) {
-            return res.status(400).json({ error: 'This email already has an account. Try signing in!' });
-        }
+          if (userByEmail.googleId) {
+              // User exists with Google OAuth; suggest signing in via Google
+              return res.status(400).json({ error: 'This email is already associated with a Google account. Try signing in with Google!' });
+          } else {
+              // Email exists via traditional sign-up
+              return res.status(400).json({ error: 'This email is already registered. Try signing in!' });
+          }
+      }
 
         // Create a new user with hashed password
         const user = await User.create({
@@ -132,5 +133,15 @@ router.post('/reset-password', async (req, res) => {
       res.status(400).json({ error: 'Invalid or expired token.' });
     }
   });
+
+
+  // Google OAuth route (redirects to Google)
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
+
+// Google OAuth callback (Google redirects here)
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/signin', session: false }), (req, res) => {
+    // On success, send the JWT token to the frontend (e.g., attach it as a query param)
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${req.user.jwtToken}`);
+});
 
 module.exports = router;
