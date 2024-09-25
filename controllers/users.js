@@ -21,12 +21,6 @@ router.get('/signin', (req,res)=>{
 
 router.post('/signup', async (req, res) => {
     try {
-        // Check if the username is already taken
-        // const userInDatabase = await User.findOne({ username: req.body.username });
-        // if (userInDatabase) {
-        //     return res.json({ error: 'Username already taken.' });
-        // }
-
         // Check for unique email
         const userByEmail = await User.findOne({ email: req.body.email });
         if (userByEmail) {
@@ -47,7 +41,6 @@ router.post('/signup', async (req, res) => {
         res.status(201).json({ user, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
-
     }
 });
 
@@ -95,7 +88,7 @@ router.post('/request-reset-password', async (req, res) => {
       },
     });
 
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.FRONTEND_URL}/game/reset-password?token=${resetToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
