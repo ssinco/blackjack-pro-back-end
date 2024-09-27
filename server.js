@@ -34,6 +34,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 const allowedOrigins = [
   'http://localhost:5173', // Development frontend URL
   'https://your-production-frontend-url.com', // Production frontend URL
+  'https://www.blackjackpro.io',
+  'http://www.blackjackpro.io',
   'capacitor://localhost',
 ];
 
