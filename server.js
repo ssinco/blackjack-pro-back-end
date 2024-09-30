@@ -35,7 +35,9 @@ const allowedOrigins = [
   'http://localhost:5173', // Development frontend URL
   'https://your-production-frontend-url.com', // Production frontend URL
   'https://www.blackjackpro.io',
+  'https://blackjackpro.io',
   'http://www.blackjackpro.io',
+  'http://blackjackpro.io',
   'capacitor://localhost',
 ];
 
