@@ -48,7 +48,6 @@ router.post('/signup', async (req, res) => {
         res.status(201).json({ user, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
-
     }
 });
 
@@ -96,7 +95,7 @@ router.post('/request-reset-password', async (req, res) => {
       },
     });
 
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.FRONTEND_URL}/game/reset-password?token=${resetToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
