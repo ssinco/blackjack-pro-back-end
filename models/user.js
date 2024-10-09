@@ -15,8 +15,18 @@ const userSchema = new mongoose.Schema({
     },
     hashedPassword:{
         type:String,
-        required:true
+        // required:true
+
+        // Make it optional for OAuth users
+        required: function () {
+            return !this.googleId;
+        },
     },
+    googleId: {
+        type: String,
+        unique: true, // Unique to distinguish OAuth users
+    },
+    displayName: String,
     
 })
 

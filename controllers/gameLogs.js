@@ -16,8 +16,8 @@ router.use(verifyToken);
 
 // Show all the records    
 router.get('/count-single', async (req,res) => {
+    console.log(req.user)
     try{
-        
         const gameLogs = await GameLogSingleCount.find({
             user: req.user._id,
             duration: { $gt: 0 }  // Exclude records with a duration of 0
