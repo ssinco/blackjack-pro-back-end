@@ -21,6 +21,7 @@ passport.use(new GoogleStrategy({
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
 },
 async (token, tokenSecret, profile, done) => {
+    console.log('profile', profile)
     try {
         // Check if a user with this email already exists
         let user = await User.findOne({ email: profile.emails[0].value });

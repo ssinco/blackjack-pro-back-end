@@ -138,9 +138,38 @@ router.post('/reset-password', async (req, res) => {
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
 
 // Google OAuth callback (Google redirects here)
+// router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/signin', session: false }), (req, res) => {
+//     // On success, send the JWT token to the frontend (e.g., attach it as a query param)
+//     res.redirect(`${process.env.FRONTEND_URL}/game/dashboard?token=${req.user.jwtToken}`);
+// });
+
+// router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/signin', session: false }), (req, res) => {
+//   // Redirect the user to the frontend OAuth complete route (where token fetching happens)
+//   res.redirect(`${process.env.FRONTEND_URL}/oauth-complete`);
+// });
+
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/signin', session: false }), (req, res) => {
-    // On success, send the JWT token to the frontend (e.g., attach it as a query param)
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${req.user.jwtToken}`);
+  const user = req.user.user || req.user; // Fallback in case it's structured differently
+  console.log('google callback', user)
+
+    // Log the payload you're about to sign
+    const payload = {
+      email: user.email,
+      _id: user._id,
+    };
+    console.log('Payload for JWT:', payload); // Check that this is correct
+
+    
+  const token = jwt.sign({
+    // username: user.username,
+    email:user.email,
+    _id: user._id,
+}, process.env.JWT_SECRET);
+
+  console.log('generatd jwt', token)
+
+  // Redirect with the token in the URL hash (not query params)
+  res.redirect(`${process.env.FRONTEND_URL}/oauth-complete#token=${token}`);
 });
 
 module.exports = router;
