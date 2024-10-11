@@ -191,7 +191,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
   console.log('generatd jwt', token)
 
   // Redirect with the token in the URL hash (not query params)
-  res.redirect(`${process.env.FRONTEND_URL}/oauth-complete#token=${token}`);
+  res.redirect(`${process.env.FRONTEND_URL}/game/oauth-complete#token=${token}`);
 });
 
 
