@@ -32,7 +32,8 @@ const handleMobileGoogleLogin = async (req, res) => {
       user = new User({ googleId: sub, email });
       await user.save();
     }
-    const jwtToken = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // const jwtToken = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const jwtToken = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET);
     res.json({ token: jwtToken });
   } catch (error) {
     console.error('Error with mobile Google login:', error);
