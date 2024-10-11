@@ -5,11 +5,45 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
+const { OAuth2Client } = require('google-auth-library');
 
 
 const SALT_LENGTH = 12;
 const RESET_PASSWORD_SECRET = process.env.RESET_PASSWORD_SECRET; // Use a separate secret for reset tokens
 const RESET_PASSWORD_EXPIRY = '1h'; // Token expiration time
+
+// Mobile Google Auth client setup
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
+
+
+/* ================================================================
+HANDLER FUNCTIONS
+================================================================ */
+
+// Mobile Google OAuth flow: Handles ID token sent from the mobile app
+const handleMobileGoogleLogin = async (req, res) => {
+  console.log('handleMobileGoogleLogin hit')
+  const { token } = req.body;
+  try {
+    const ticket = await client.verifyIdToken({ idToken: token, audience: process.env.GOOGLE_CLIENT_ID_IOS });
+    const { email, sub } = ticket.getPayload();
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = new User({ googleId: sub, email });
+      await user.save();
+    }
+    // const jwtToken = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const jwtToken = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET);
+    res.json({ token: jwtToken });
+  } catch (error) {
+    console.error('Error with mobile Google login:', error);
+    res.status(400).json({ error: 'Google login failed' });
+  }
+};
+
+/* ================================================================
+ROUTES
+================================================================ */
 
 
 router.get('/signup', (req,res)=>{
@@ -134,19 +168,8 @@ router.post('/reset-password', async (req, res) => {
   });
 
 
-  // Google OAuth route (redirects to Google)
+// Google OAuth route (redirects to Google) for desktop
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
-
-// Google OAuth callback (Google redirects here)
-// router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/signin', session: false }), (req, res) => {
-//     // On success, send the JWT token to the frontend (e.g., attach it as a query param)
-//     res.redirect(`${process.env.FRONTEND_URL}/game/dashboard?token=${req.user.jwtToken}`);
-// });
-
-// router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/signin', session: false }), (req, res) => {
-//   // Redirect the user to the frontend OAuth complete route (where token fetching happens)
-//   res.redirect(`${process.env.FRONTEND_URL}/oauth-complete`);
-// });
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/signin', session: false }), (req, res) => {
   const user = req.user.user || req.user; // Fallback in case it's structured differently
@@ -159,7 +182,6 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
     };
     console.log('Payload for JWT:', payload); // Check that this is correct
 
-    
   const token = jwt.sign({
     // username: user.username,
     email:user.email,
@@ -171,5 +193,10 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
   // Redirect with the token in the URL hash (not query params)
   res.redirect(`${process.env.FRONTEND_URL}/oauth-complete#token=${token}`);
 });
+
+
+// Mobile route for Google login
+router.post('/google-mobile', handleMobileGoogleLogin);
+
 
 module.exports = router;
