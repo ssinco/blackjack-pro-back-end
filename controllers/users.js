@@ -74,6 +74,11 @@ router.post('/signup', async (req, res) => {
             email:req.body.email,
             hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH)
         })
+
+        // Create a userRank document for user
+        
+
+        // Create a token and send back to frontend
         const token = jwt.sign({
             // username: user.username,
             email: user.email,

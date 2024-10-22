@@ -1,35 +1,43 @@
 const mongoose = require('mongoose')
 
-
-const resultsSchema = new mongoose.Schema({
-    dealerUpCard: { type: String, required: true },
-    playerCards: { type: [String], required: true },
-    userChoice: { type: String, required: true },
-    optimalChoice: { type: String, required: true },
-    isCorrect: { type: Boolean, required: true }
-  });
-  
-
-
 const gameLogBasicStrategySchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
 
-    score: {
+    playerScore: {
         type: Number, 
         required: true 
     },
-    gameType: {
+    setting: {
         type:String,
         required:true
     },
-    resuts: [resultsSchema],
-    endTime: { type: Date },        
-    isActive: { type: Boolean, default: true },
+    success: {
+        type: Boolean,
+        required: true
+    },
+    failScenario: {
+        playerHand: {
+            type: Number, // Players hand value
+            required: function() { return !this.success; }, // Only required on failure
+        },
+        dealerUpcard: {
+            type: Number, // Dealer’s upcard value (e.g., 2-11 with 11 representing Ace)
+            required: function() { return !this.success; },
+        },
+        guess: {
+            type: String, // Player's guessed action (e.g., 'Hit', 'Stand', 'Double')
+            required: function() { return !this.success; },
+        },
+        correctAction: {
+            type: String, // Correct action (e.g., 'Hit', 'Stand')
+            required: function() { return !this.success; },
+        },
+    },
 }, {timestamps: true}
 )
 
 
-module.exports=mongoose.model('GameLogSingleCount', gameLogBasicStrategySchema)
+module.exports=mongoose.model('GameLogBasicStrategy', gameLogBasicStrategySchema)

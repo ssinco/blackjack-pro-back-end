@@ -6,6 +6,18 @@ const userRankSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    progress: {
+        singleCount: {
+            attempts: [
+                { type: mongoose.Schema.Types.ObjectId, ref: 'GameLogSingleCount' }
+            ], // Array of attempts from BasicStrategy model that meet progress criteria. Will not store all attempts
+        },
+        basicStrategy: {
+            attempts: [
+                { type: mongoose.Schema.Types.ObjectId, ref: 'GameLogBasicStrategy' }
+            ], // Array of attempts from BasicStrategy model that meet progress criteria. Will not store all attempts
+        },
+    },
     rankOne: {
         completed: {
             type: Boolean,
