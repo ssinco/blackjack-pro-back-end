@@ -14,7 +14,10 @@ const userRankSchema = new mongoose.Schema({
         },
         basicStrategy: {
             attempts: [
-                { type: mongoose.Schema.Types.ObjectId, ref: 'GameLogBasicStrategy' }
+                {
+                    gameLog: { type: mongoose.Schema.Types.ObjectId, ref: 'GameLogBasicStrategy' },
+                    setting: { type: String, enum: ['hards', 'pairs', 'softs', 'random'], required: true },
+                },
             ], // Array of attempts from BasicStrategy model that meet progress criteria. Will not store all attempts
         },
     },

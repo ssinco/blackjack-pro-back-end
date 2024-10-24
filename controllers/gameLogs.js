@@ -5,6 +5,7 @@ const verifyToken = require ('../middleware/verify-token.js');
 const GameLogSingleCount = require ('../models/gameLogSingleCount.js')
 const GameLogSnapshotCount = require ('../models/gameLogSnapshotCount.js');
 const GameLogBasicStrategy = require('../models/gameLogBasicStrategy.js');
+const UserRank = require('../models/userRank.js'); // Import the UserRank model
 
 
 router.use(verifyToken);
@@ -44,21 +45,18 @@ router.post('/count-single', async (req,res) => {
 
 /* =============== Routes for basic strategy =============== */
 
-// create basic strategy logs
+
 router.post('/basic-strategy', async (req,res) => {
     try {
         req.body.user = req.user._id
         console.log('basic strategy data', req.body)
-        const newLog = await GameLogBasicStrategy.create(req.body)
-        console.log('newLog', newLog)
-        res.status(200).json(newLog)
+        const newLog = await GameLogBasicStrategy.create(req.body);
+        console.log('New Log:', newLog);
+        res.status(200).json(newLog);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 })
-
-// 
-
 
 
 /* =============== Routes for snapshot count =============== */
