@@ -20,7 +20,8 @@ require('./config/passport');
 --------------- Controllers --------------- */
 const usersRouter = require('./controllers/users.js')
 const gameLogsRouter = require('./controllers/gameLogs.js')
-const rankRouter = require('./controllers/userRanks.js')
+const progressRouter = require('./controllers/userProgress.js')
+
 
 
 /*
@@ -72,8 +73,9 @@ app.use(passport.initialize());
 =============== Routes =============== */
 
 app.use('/users',usersRouter)
-app.use('/rank',rankRouter)
+app.use('/progress',progressRouter)
 app.use('/game',gameLogsRouter)
+
 
 app.get('/', (req, res) => {
     console.log('test')

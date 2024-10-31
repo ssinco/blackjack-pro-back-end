@@ -1,6 +1,8 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/user'); // Import User model
+const { userProgressSetup } = require('../services/userSetupService');  // Import userProgressSetup
+
 const jwt = require('jsonwebtoken');
 
 // Serialize user for session (this is optional, needed only if using sessions)
@@ -40,6 +42,8 @@ async (token, tokenSecret, profile, done) => {
                 displayName: profile.displayName,
             });
             await user.save();
+            // Perform post-registration setup for new Google users
+            await userProgressSetup(user._id);
         }
 
         // Generate a JWT token for the user

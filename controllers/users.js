@@ -5,6 +5,9 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
+
+const { userProgressSetup } = require('../services/userSetupService');
+
 const { OAuth2Client } = require('google-auth-library');
 
 
@@ -31,6 +34,8 @@ const handleMobileGoogleLogin = async (req, res) => {
     if (!user) {
       user = new User({ googleId: sub, email });
       await user.save();
+      // Perform post-registration setup for new Google users
+      await userProgressSetup(user._id);
     }
     // const jwtToken = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     const jwtToken = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET);
@@ -75,7 +80,8 @@ router.post('/signup', async (req, res) => {
             hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH)
         })
 
-        // Create a userRank document for user
+        // Perform post-registration setup
+        await userProgressSetup(user._id);
         
 
         // Create a token and send back to frontend

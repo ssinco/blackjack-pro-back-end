@@ -29,6 +29,10 @@ const gameLogSingleCountSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
+    success: {
+        type: Boolean,
+        // required: true
+    },
     duration: {
         type:Number, // Stored in milliseconds
         required: true,
