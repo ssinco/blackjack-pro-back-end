@@ -7,7 +7,7 @@ const GameLogSnapshotCount = require ('../models/gameLogSnapshotCount.js');
 const GameLogBasicStrategy = require('../models/gameLogBasicStrategy.js');
 const UserProgress = require('../models/userProgress.js');
 
-const { checkAndUpdateRank } = require('../services/rankService');
+const { checkAndUpdateRank, updateProgressBasicStrategy, updateProgressSingleCount } = require('../services/rankService');
 const { userProgressSetup } = require('../services/userSetupService');
 
 router.use(verifyToken);
@@ -17,11 +17,15 @@ router.get('/', async (req,res) => {
     console.log('progress GET')
     try {
         let userProgress = await UserProgress.findOne({user: req.user._id,})
+
+        // Create a new userProgress document if user doesnt have one already
         if (!userProgress) {
             console.log('No UserProgress found. Creating a new one...');
-            // Create a new userRank document
-            // userProgress = await UserProgress.create({ user: req.user._id });
+            
+            // Create the new document
             userProgress = await userProgressSetup(req.user._id)
+            // Update the progress with their single count data (if it exists)
+            await updateProgressSingleCount(req.user._id)
             console.log('New UserProgress created:', userProgress);
         }
         console.log('progress of user', userProgress)
