@@ -88,11 +88,11 @@ const updateProgressSingleCount = async (userId) => {
       console.log('User progress updated successfully!');
 
       // Check for challenges to update
-      const completedChallenge = await checkAndUpdateChallenge(userProgress)
+      const completedChallenge = await checkAndUpdateChallenge(userProgress);
       // Check for an upgrade
-      const completedRank = await checkAndUpdateRank(userProgress)
+      const rankInProgress = await checkAndUpdateRank(userProgress)
 
-      return {userProgress, completedChallenge, completedRank}
+      return { userProgress, completedChallenge, rankInProgress }
 
   } catch (error) {
       console.error('Error updating user stats:', error);
@@ -116,11 +116,11 @@ const updateProgressBasicStrategy= async (newLog, userId) => {
 
 
       // Check for challenges to update
-      const completedChallenge = await checkAndUpdateChallenge(userProgress)
+      const completedChallenge = await checkAndUpdateChallenge(userProgress);
       // Check for an upgrade
-      const completedRank = await checkAndUpdateRank(userProgress)
+      const rankInProgress = await checkAndUpdateRank(userProgress)
 
-      return {userProgress, completedChallenge, completedRank}
+      return {userProgress, completedChallenge, rankInProgress}
 
   } catch (err) {
       res.status(500).json()
@@ -174,7 +174,7 @@ const updateProgressBasicStrategy= async (newLog, userId) => {
 
 const checkAndUpdateRank = async (userProgress) => {
   let updated = false;
-  let completedRank = null;
+  let rankInProgress = userProgress.rank.currentRank;
 
   // Helper function to check if all challenges for a given rank are completed
   const areChallengesCompletedForRank = (rank) => {
@@ -187,7 +187,7 @@ const checkAndUpdateRank = async (userProgress) => {
   if (areChallengesCompletedForRank(1) && !userProgress.rank.challengesCompleted.rankOne) {
     userProgress.rank.challengesCompleted.rankOne = true;
     userProgress.rank.currentRank = 1; // Set the updated rank
-    completedRank = 1; // Set completedRank to the rank level
+    // completedRank = 1; // Set completedRank to the rank level
     updated = true;
   }
 
@@ -195,7 +195,7 @@ const checkAndUpdateRank = async (userProgress) => {
   if (areChallengesCompletedForRank(2) && !userProgress.rank.challengesCompleted.rankTwo) {
     userProgress.rank.challengesCompleted.rankTwo = true;
     userProgress.rank.currentRank = 2;
-    completedRank = 2;
+    // completedRank = 2;
     updated = true;
   }
 
@@ -203,7 +203,7 @@ const checkAndUpdateRank = async (userProgress) => {
   if (areChallengesCompletedForRank(3) && !userProgress.rank.challengesCompleted.rankThree) {
     userProgress.rank.challengesCompleted.rankThree = true;
     userProgress.rank.currentRank = 3;
-    completedRank = 3;
+    // completedRank = 3;
     updated = true;
   }
 
@@ -212,14 +212,14 @@ const checkAndUpdateRank = async (userProgress) => {
     await userProgress.save();
   }
 
-  return completedRank; // Returns the updated rank level or null if no rank was updated
+  return rankInProgress; // Returns the updated rank level or null if no rank was updated
 };
 
 
 
 const checkAndUpdateChallenge = async (userProgress) => {
   let updated = false
-  let completedChallenge = null
+  let completedChallenge = {}
 
   function markComplete(challenge) {
       challenge.completed = true;

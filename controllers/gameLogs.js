@@ -48,7 +48,7 @@ router.post('/count-single', async (req,res) => {
             const newUserProgress = await updateProgressSingleCount(req.user._id)
             return res.status(200).json({newLog, newUserProgress})
         }
-        res.status(200).json(newLog)
+        res.status(200).json({newLog})
     }catch(err){
         res.status(500).json({ message: err.message });
     }
@@ -70,7 +70,7 @@ router.post('/basic-strategy', async (req,res) => {
             const newUserProgress = await updateProgressBasicStrategy(newLog, req.user._id)
             return res.status(200).json({newLog, newUserProgress});
         }
-        res.status(200).json(newLog);
+        res.status(200).json({newLog});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
