@@ -67,8 +67,8 @@ router.post('/basic-strategy', async (req,res) => {
         // If successful attempt, update user progress
         if (newLog.success) {
             console.log('new update progress conditional hit')
-            const newUserProgress = await updateProgressBasicStrategy(newLog, req.user._id)
-            return res.status(200).json({newLog, newUserProgress});
+            const newProgress = await updateProgressBasicStrategy(newLog, req.user._id)
+            return res.status(200).json({newLog, newProgress});
         }
         res.status(200).json({newLog});
     } catch (err) {
