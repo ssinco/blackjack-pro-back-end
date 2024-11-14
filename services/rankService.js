@@ -117,6 +117,7 @@ const updateProgressBasicStrategy= async (newLog, userId) => {
 
       // Check for challenges to update
       const completedChallenge = await checkAndUpdateChallenge(userProgress);
+
       // Check for an upgrade
       const rankInProgress = await checkAndUpdateRank(userProgress)
 
@@ -127,50 +128,6 @@ const updateProgressBasicStrategy= async (newLog, userId) => {
   }
   return
 }
-
-// const checkAndUpdateRank2 = async (userProgress) => {
-//   let rankUpdated = false;
-
-//   // Check for 
-
-//   // Check for rankOne upgrade
-//   if (
-//     userProgress.rank.currentRank === 0 &&
-//     userProgress.singleCount.bestStreak.length > 0 &&
-//     userProgress.basicStrategy.hardsWin.length > 0
-//   ) {
-//     userProgress.rank.challengesCompleted.rankOne = true;
-//     userProgress.rank.currentRank = 1;
-//     rankUpdated = true;
-//   }
-
-//   // Check for rankTwo upgrade
-//   if (
-//     userProgress.rank.currentRank === 1 &&
-//     userProgress.singleCount.bestStreak.length >= 5 &&
-//     userProgress.basicStrategy.softsWin.length > 0 &&
-//     userProgress.basicStrategy.pairsWin.length > 0
-//   ) {
-//     userProgress.rank.challengesCompleted.rankTwo = true;
-//     userProgress.rank.currentRank = 2;
-//     rankUpdated = true;
-//   }
-
-//   // Check for rankTwo upgrade
-//   if (
-//     userProgress.rank.currentRank === 2 &&
-//     userProgress.singleCount.bestStreak.length >= 10 &&
-//     userProgress.basicStrategy.randomWin.length > 0
-//   ) {
-//     userProgress.rank.challengesCompleted.rankThree = true;
-//     userProgress.rank.currentRank = 3;
-//     rankUpdated = true;
-//   }
-
-//   await userProgress.save();
-//   return rankUpdated;
-// };
-
 
 const checkAndUpdateRank = async (userProgress) => {
   let updated = false;
@@ -212,7 +169,10 @@ const checkAndUpdateRank = async (userProgress) => {
     await userProgress.save();
   }
 
-  return rankInProgress; // Returns the updated rank level or null if no rank was updated
+  return { 
+    rankInProgress,
+    updated,
+  } // Returns the updated rank level or null if no rank was updated
 };
 
 
@@ -239,12 +199,21 @@ const checkAndUpdateChallenge = async (userProgress) => {
     if (challenge.uid === '0-1-2' && userProgress.basicStrategy.hardsWin.length > 0) {markComplete(challenge)}
 
     // rank 2
-    if (challenge.uid === '0-2-1' && userProgress.singleCount.bestStreak.length >= 5) {markComplete(challenge)}
+
+
+    // for testing
+    if (challenge.uid === '0-2-1' && userProgress.singleCount.bestStreak.length > 1) {markComplete(challenge)}
+    // for deployment
+    // if (challenge.uid === '0-2-1' && userProgress.singleCount.bestStreak.length >= 5) {markComplete(challenge)}
     if (challenge.uid === '0-2-2' && userProgress.basicStrategy.pairsWin.length > 0) {markComplete(challenge)}
     if (challenge.uid === '0-2-3' && userProgress.basicStrategy.softsWin.length > 0) {markComplete(challenge)}
 
     // rank 3
-    if (challenge.uid === '0-3-1' && userProgress.singleCount.bestStreak.length >= 10 && userProgress.singleCount.bestStreakMedianTime <= 120000) {markComplete(challenge)}
+
+    // for testing
+    if (challenge.uid === '0-3-1' && userProgress.singleCount.bestStreak.length > 2) {markComplete(challenge)}
+    // for deployment
+    // if (challenge.uid === '0-3-1' && userProgress.singleCount.bestStreak.length >= 10 && userProgress.singleCount.bestStreakMedianTime <= 120000) {markComplete(challenge)}
     if (challenge.uid === '0-3-2' && userProgress.basicStrategy.randomWin.length > 0) {markComplete(challenge)}
   }
 

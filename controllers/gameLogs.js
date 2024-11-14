@@ -45,8 +45,8 @@ router.post('/count-single', async (req,res) => {
         // const newStats = await updateUserStats(req.user._id);
 
         if (newLog.success) {
-            const newUserProgress = await updateProgressSingleCount(req.user._id)
-            return res.status(200).json({newLog, newUserProgress})
+            const newProgress = await updateProgressSingleCount(req.user._id)
+            return res.status(200).json({newLog, newProgress})
         }
         res.status(200).json({newLog})
     }catch(err){
