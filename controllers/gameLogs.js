@@ -5,6 +5,7 @@ const verifyToken = require ('../middleware/verify-token.js');
 const GameLogSingleCount = require ('../models/gameLogSingleCount.js')
 const GameLogSnapshotCount = require ('../models/gameLogSnapshotCount.js');
 const GameLogBasicStrategy = require('../models/gameLogBasicStrategy.js');
+const UserProgress = require('../models/userProgress.js');
 
 const { 
     updateProgressBasicStrategy, 
@@ -47,8 +48,19 @@ router.post('/count-single', async (req,res) => {
         if (newLog.success) {
             const newProgress = await updateProgressSingleCount(req.user._id)
             return res.status(200).json({newLog, newProgress})
-        }
-        res.status(200).json({newLog})
+        } else {
+            // Reset the current streak for failed attempts
+            console.log('Game log failed. Resetting current streak.');
+
+            // Reset the user's current streak
+            await UserProgress.findOneAndUpdate(
+                { user: req.user._id },
+                { $set: { 'singleCount.currentStreak': [] } },
+                { new: true }
+            );
+            res.status(200).json({newLog})
+        }   
+        // res.status(200).json({newLog})
     }catch(err){
         res.status(500).json({ message: err.message });
     }

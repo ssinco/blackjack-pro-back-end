@@ -82,19 +82,6 @@ router.get('/', async (req,res) => {
 
 
 
-// Update progress data for singlecount
-
-    // store in the currentStreak
-
-    // if the 
-
-    // update the bestStreak if applicable
-
-    // calculate the fastestTime and medianTimes
-
-    // check for upgrade
-
-
 
 module.exports = router;
 

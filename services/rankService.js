@@ -136,31 +136,37 @@ const checkAndUpdateRank = async (userProgress) => {
   // Helper function to check if all challenges for a given rank are completed
   const areChallengesCompletedForRank = (rank) => {
     return userProgress.rank.challengeDetails
-      .filter(challenge => challenge.uid.includes(`-${rank}-`))  // Filter challenges by rank pattern
-      .every(challenge => challenge.completed);  // Check if all are completed
+      .filter((challenge) => challenge.uid.includes(`-${rank}-`))
+      .every((challenge) => challenge.completed);
   };
 
-  // Check if rank ONE can be updated
+  // Track the highest rank achieved based on completed challenges
+  let highestEligibleRank = rankInProgress;
+
+  // Check if rank ONE challenges are completed
   if (areChallengesCompletedForRank(1) && !userProgress.rank.challengesCompleted.rankOne) {
     userProgress.rank.challengesCompleted.rankOne = true;
-    userProgress.rank.currentRank = 1; // Set the updated rank
-    // completedRank = 1; // Set completedRank to the rank level
+    highestEligibleRank = Math.max(highestEligibleRank, 1);
     updated = true;
   }
 
-  // Check if rank TWO can be updated
+  // Check if rank TWO challenges are completed
   if (areChallengesCompletedForRank(2) && !userProgress.rank.challengesCompleted.rankTwo) {
     userProgress.rank.challengesCompleted.rankTwo = true;
-    userProgress.rank.currentRank = 2;
-    // completedRank = 2;
+    highestEligibleRank = Math.max(highestEligibleRank, 2);
     updated = true;
   }
 
-  // Check if rank THREE can be updated
+  // Check if rank THREE challenges are completed
   if (areChallengesCompletedForRank(3) && !userProgress.rank.challengesCompleted.rankThree) {
     userProgress.rank.challengesCompleted.rankThree = true;
-    userProgress.rank.currentRank = 3;
-    // completedRank = 3;
+    highestEligibleRank = Math.max(highestEligibleRank, 3);
+    updated = true;
+  }
+
+  // Update the current rank if it is lower than the highest eligible rank
+  if (highestEligibleRank > userProgress.rank.currentRank) {
+    userProgress.rank.currentRank = highestEligibleRank;
     updated = true;
   }
 
@@ -169,11 +175,12 @@ const checkAndUpdateRank = async (userProgress) => {
     await userProgress.save();
   }
 
-  return { 
+  return {
     rankInProgress,
     updated,
-  } // Returns the updated rank level or null if no rank was updated
+  };
 };
+
 
 
 
