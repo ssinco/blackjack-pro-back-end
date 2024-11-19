@@ -116,6 +116,28 @@ router.post('/signin', async (req, res) => {
     }
 });
 
+
+router.delete('/delete/:id', async (req,res) => {
+  console.log('delete hite')
+  const { id } = req.params;
+  
+  console.log(id)
+  try {
+    // Find and delete the user by ID
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Perform any additional cleanup if necessary (e.g., related data)
+    res.json({ user, message: 'User successfully deleted' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the user' });
+  }
+});
+
 // Endpoint to request password reset
 router.post('/request-reset-password', async (req, res) => {
   const { email } = req.body;
