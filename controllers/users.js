@@ -120,7 +120,7 @@ router.post('/signin', async (req, res) => {
 router.delete('/delete/:id', async (req,res) => {
   console.log('delete hite')
   const { id } = req.params;
-  
+
   console.log(id)
   try {
     // Find and delete the user by ID
@@ -162,7 +162,7 @@ router.post('/request-reset-password', async (req, res) => {
       },
     });
 
-    const resetLink = `${process.env.FRONTEND_URL}/game/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -224,7 +224,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
   console.log('generatd jwt', token)
 
   // Redirect with the token in the URL hash (not query params)
-  res.redirect(`${process.env.FRONTEND_URL}/game/oauth-complete#token=${token}`);
+  res.redirect(`${process.env.FRONTEND_URL}/oauth-complete#token=${token}`);
 });
 
 
