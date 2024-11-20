@@ -43,6 +43,8 @@ const allowedOrigins = [
   'https://blackjackpro.io',
   'http://www.blackjackpro.io',
   'http://blackjackpro.io',
+  'https://app.blackjackpro.io',
+  'http://app.blackjackpro.io',
   'capacitor://localhost',
 ];
 
